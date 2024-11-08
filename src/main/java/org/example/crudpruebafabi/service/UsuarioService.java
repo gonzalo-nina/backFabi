@@ -4,47 +4,26 @@ import org.example.crudpruebafabi.dto.UsuarioDTO;
 import org.example.crudpruebafabi.model.Usuario;
 import org.example.crudpruebafabi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UsuarioService {
+public interface UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    public UserDetailsService userDetailsService();
 
-    public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO) {
-        Usuario usuario = new Usuario();
-        usuario.setUsuario(usuarioDTO.getUsuario());
-        usuario.setClave(usuarioDTO.getClave());
-        usuarioRepository.save(usuario);
+    public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO);
 
-        usuarioDTO.setId(usuario.getId());
-        return usuarioDTO;
-    }
+    public List<UsuarioDTO> obtenerUsuarios();
 
-    public List<UsuarioDTO> obtenerUsuarios() {
-        return usuarioRepository.findAll().stream().map(usuario -> {
-            UsuarioDTO dto = new UsuarioDTO();
-            dto.setId(usuario.getId());
-            dto.setUsuario(usuario.getUsuario());
-            dto.setClave(usuario.getClave());
-            return dto;
-        }).collect(Collectors.toList());
-    }
+    public UsuarioDTO actualizarUsuario(Long id, UsuarioDTO usuarioDTO);
 
-    public UsuarioDTO actualizarUsuario(Long id, UsuarioDTO usuarioDTO) {
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        usuario.setUsuario(usuarioDTO.getUsuario());
-        usuario.setClave(usuarioDTO.getClave());
-        usuarioRepository.save(usuario);
+    public void eliminarUsuario(Long id);
 
-        return usuarioDTO;
-    }
 
-    public void eliminarUsuario(Long id) {
-        usuarioRepository.deleteById(id);
-    }
 }

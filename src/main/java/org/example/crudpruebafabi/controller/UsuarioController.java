@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/usuarios")
+@RequestMapping("api/v1/user")
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
@@ -23,7 +23,7 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UsuarioDTO usuarioDTO) {
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByUsuarioAndClave(usuarioDTO.getUsuario(), usuarioDTO.getClave());
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByUsuarioAndPassword(usuarioDTO.getUsuario(), usuarioDTO.getClave());
         if (usuarioOpt.isPresent()) {
             // Puedes devolver un token JWT aquí si lo deseas
             return ResponseEntity.ok(usuarioDTO); // O devuelve información relevante del usuario
