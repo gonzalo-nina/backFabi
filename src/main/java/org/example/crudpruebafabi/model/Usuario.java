@@ -1,41 +1,69 @@
 package org.example.crudpruebafabi.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-public class Usuario {
+@Table(name = "usuario")
+public class Usuario implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id_usuario")
+    @Column(name = "id_usuario")
     private Long id;
 
-    @Column(name = "usuario")
+    private String email;
     private String usuario;
+    private String password;
 
-    @Column(name = "contrasenia")
-    private String clave;
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Rol.class, cascade = CascadeType.ALL)
+    @JoinTable(name = "usuario_rol",
+    joinColumns = @JoinColumn(name = "id_usuario"),
+    inverseJoinColumns = @JoinColumn(name = "id_rol"))
+    private Set<Rol> roles = new HashSet<>();
 
-    public Long getId() {
-        return id;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream()
+                .map(rol -> new SimpleGrantedAuthority("ROLE_".concat(rol.getNombreRol().name())))
+                .collect(Collectors.toSet());
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public String getUsername() {
+        return email;
     }
 
-    public String getUsuario() {
-        return usuario;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public String getClave() {
-        return clave;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public void setClave(String clave) {
-        this.clave = clave;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
