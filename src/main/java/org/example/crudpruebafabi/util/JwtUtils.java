@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.example.crudpruebafabi.model.Usuario;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +26,8 @@ public class JwtUtils {
     @Value("${security.jwt.user.generator}")
     private String userGenerator;
 
+
+
     public String createToken(Authentication authentication){
 
         Algorithm algorithm = Algorithm.HMAC256(this.privateKey);
@@ -34,6 +37,7 @@ public class JwtUtils {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
+
 
         String jwtToken = JWT.create()
                 .withIssuer(userGenerator)
