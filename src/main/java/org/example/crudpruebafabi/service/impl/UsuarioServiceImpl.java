@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,8 +51,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioDTO;
     }
 
-    public void eliminarUsuario(Long id) {
-        usuarioRepository.deleteById(id);
+    public boolean deshabilitarUsuario(Long id) {
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if (usuario.isPresent()) {
+            usuario.get().setActivo(false);
+            usuarioRepository.save(usuario.get());
+            return true;
+        }
+        return false;
     }
 
 }

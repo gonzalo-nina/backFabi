@@ -49,6 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .email(email)
                 .password(new BCryptPasswordEncoder().encode(password))
                 .roles(roles)
+                .activo(true)
                 .build();
 
         Usuario userCreated = usuarioRepository.save(user);
@@ -70,6 +71,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .email(email)
                 .password(new BCryptPasswordEncoder().encode(password))
                 .roles(roles)
+                .activo(true)
                 .build();
 
         Usuario userCreated = usuarioRepository.save(user);
