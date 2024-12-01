@@ -21,7 +21,7 @@ public interface UsuarioService {
 
     public UsuarioDTO actualizarUsuario(Long id, UsuarioDTO usuarioDTO);
 
-    public void eliminarUsuario(Long id);
+    public boolean deshabilitarUsuario(Long id);
 
 
 }

@@ -39,9 +39,13 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioActualizado, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarUsuario(@PathVariable Long id) {
-        usuarioService.eliminarUsuario(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PutMapping("/deshabilitar/{id}")
+    public ResponseEntity<Void> deshabilitarUsuario(@PathVariable Long id) {
+        boolean isActive = usuarioService.deshabilitarUsuario(id);
+        if (isActive) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
