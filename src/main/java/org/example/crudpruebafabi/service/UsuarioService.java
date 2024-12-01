@@ -17,8 +17,6 @@ public interface UsuarioService {
 
     public UserDetailsService userDetailsService();
 
-    public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO);
-
     public List<UsuarioDTO> obtenerUsuarios();
 
     public UsuarioDTO actualizarUsuario(Long id, UsuarioDTO usuarioDTO);

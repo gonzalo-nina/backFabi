@@ -25,11 +25,7 @@ public class AuthenticationController {
     public ResponseEntity<Usuario> signUpAdmin(@RequestBody @Valid SignUpRequest signUpRequest){
         return new ResponseEntity<>(authenticationService.signUpAdmin(signUpRequest), HttpStatus.CREATED);
     }
-    //Crear Usuario
-    @PostMapping("/createUser")
-    public ResponseEntity<Usuario> signUpUser(@RequestBody @Valid SignUpRequest signUpRequest){
-        return new ResponseEntity<>(authenticationService.signUpUser(signUpRequest), HttpStatus.CREATED);
-    }
+
     //Iniciar Sesion
     @PostMapping("/signin")
     public ResponseEntity<AuthenticationResponse> signin(@RequestBody @Valid SignInRequest signInRequest){

@@ -28,6 +28,7 @@ public class Usuario implements UserDetails {
     private String email;
     private String usuario;
     private String password;
+    private boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = Rol.class, cascade = CascadeType.ALL)
     @JoinTable(name = "usuario_rol",

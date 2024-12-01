@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,21 +29,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         };
     }
 
-    public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO) {
-        Usuario usuario = new Usuario();
-        usuario.setUsuario(usuarioDTO.getUsuario());
-        usuario.setPassword(usuarioDTO.getClave());
-        usuarioRepository.save(usuario);
-
-        usuarioDTO.setId(usuario.getId());
-        return usuarioDTO;
-    }
-
     public List<UsuarioDTO> obtenerUsuarios() {
         return usuarioRepository.findAll().stream().map(usuario -> {
             UsuarioDTO dto = new UsuarioDTO();
             dto.setId(usuario.getId());
             dto.setUsuario(usuario.getUsuario());
+            dto.setEmail(usuario.getEmail());
             dto.setClave(usuario.getPassword());
             return dto;
         }).collect(Collectors.toList());
@@ -51,7 +43,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioDTO actualizarUsuario(Long id, UsuarioDTO usuarioDTO) {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         usuario.setUsuario(usuarioDTO.getUsuario());
-        usuario.setPassword(usuarioDTO.getClave());
+        usuario.setEmail(usuarioDTO.getEmail());
+        usuario.setPassword(new BCryptPasswordEncoder().encode(usuarioDTO.getClave()));
         usuarioRepository.save(usuario);
 
         return usuarioDTO;

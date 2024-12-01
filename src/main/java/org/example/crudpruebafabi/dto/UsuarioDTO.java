@@ -4,6 +4,15 @@ public class UsuarioDTO {
     private Long id;
     private String usuario;
     private String clave;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Long getId() {
         return id;

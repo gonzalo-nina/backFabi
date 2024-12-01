@@ -1,16 +1,18 @@
 package org.example.crudpruebafabi.controller;
 
+import jakarta.validation.Valid;
+import org.example.crudpruebafabi.agregates.request.SignUpRequest;
 import org.example.crudpruebafabi.dto.UsuarioDTO;
 import org.example.crudpruebafabi.model.Usuario;
-import org.example.crudpruebafabi.repository.UsuarioRepository;
+import org.example.crudpruebafabi.service.AuthenticationService;
 import org.example.crudpruebafabi.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/user")
@@ -19,25 +21,12 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private AuthenticationService authenticationService;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UsuarioDTO usuarioDTO) {
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByUsuarioAndPassword(usuarioDTO.getUsuario(), usuarioDTO.getClave());
-        if (usuarioOpt.isPresent()) {
-            // Puedes devolver un token JWT aquí si lo deseas
-            return ResponseEntity.ok(usuarioDTO); // O devuelve información relevante del usuario
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
-        }
+    @PostMapping("/createUser")
+    public ResponseEntity<Usuario> signUpUser(@RequestBody @Valid SignUpRequest signUpRequest){
+        return new ResponseEntity<>(authenticationService.signUpUser(signUpRequest), HttpStatus.CREATED);
     }
-
-    @PostMapping
-    public ResponseEntity<UsuarioDTO> crearUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        UsuarioDTO nuevoUsuario = usuarioService.crearUsuario(usuarioDTO);
-        return new ResponseEntity<>(nuevoUsuario, HttpStatus.CREATED);
-    }
-
 
     @GetMapping
     public List<UsuarioDTO> obtenerUsuarios() {
@@ -55,6 +44,4 @@ public class UsuarioController {
         usuarioService.eliminarUsuario(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 }
