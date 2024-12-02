@@ -1,7 +1,6 @@
 package org.example.crudpruebafabi.controller;
 
 import org.example.crudpruebafabi.model.Cliente;
-import org.example.crudpruebafabi.model.Producto;
 import org.example.crudpruebafabi.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

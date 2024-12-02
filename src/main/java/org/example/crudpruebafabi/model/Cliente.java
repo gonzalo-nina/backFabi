@@ -3,6 +3,7 @@ package org.example.crudpruebafabi.model;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Cliente {
@@ -24,6 +25,10 @@ public class Cliente {
 
     @Column(name = "FechaRegistro_cliente")
     private Date fechaRegistro;
+
+    /* Agregando la relación que faltaba en el cliente */
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos;
 
     public Cliente() {
         this.fechaRegistro = new Date();

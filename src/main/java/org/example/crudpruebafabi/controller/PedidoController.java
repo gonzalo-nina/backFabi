@@ -1,12 +1,7 @@
 package org.example.crudpruebafabi.controller;
 
 import org.example.crudpruebafabi.dto.PedidoDTO;
-import org.example.crudpruebafabi.model.Cliente;
 import org.example.crudpruebafabi.model.Pedido;
-import org.example.crudpruebafabi.model.Producto;
-import org.example.crudpruebafabi.repository.ClienteRepository;
-import org.example.crudpruebafabi.repository.PedidoRepository;
-import org.example.crudpruebafabi.repository.ProductoRepository;
 import org.example.crudpruebafabi.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -12,7 +12,6 @@ import org.example.crudpruebafabi.repository.UsuarioRepository;
 import org.example.crudpruebafabi.service.AuthenticationService;
 import org.example.crudpruebafabi.service.UsuarioService;
 import org.example.crudpruebafabi.util.JwtUtils;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

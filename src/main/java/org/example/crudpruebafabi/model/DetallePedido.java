@@ -14,8 +14,11 @@ public class DetallePedido {
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
 
-    @Column(name = "id_producto")
-    private Long idProducto;
+    /* Agregando la relacion para que puedan asociar sus productos uhaha */
+    /* Se ha cambiado int -> Producto y idProducto -> producto */
+    @ManyToOne
+    @JoinColumn(name = "id_producto")
+    private Producto producto;
 
     @Column(name = "cantidad")
     private int cantidad;
@@ -27,14 +30,17 @@ public class DetallePedido {
     private double subtotal;
 
     // Constructores, Getters, y Setters
-    public DetallePedido() {}
+    public DetallePedido() {
+    }
 
-    public DetallePedido(Pedido pedido, Long idProducto, int cantidad, double precioUnitario) {
+    public DetallePedido(Long idDetallePedido, Pedido pedido, Producto producto, int cantidad, double precioUnitario,
+            double subtotal) {
+        this.idDetallePedido = idDetallePedido;
         this.pedido = pedido;
-        this.idProducto = idProducto;
+        this.producto = producto;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
-        this.subtotal = cantidad * precioUnitario;
+        this.subtotal = subtotal;
     }
 
     public Long getIdDetallePedido() {
@@ -51,14 +57,6 @@ public class DetallePedido {
 
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
-    }
-
-    public Long getIdProducto() {
-        return idProducto;
-    }
-
-    public void setIdProducto(Long idProducto) {
-        this.idProducto = idProducto;
     }
 
     public int getCantidad() {
@@ -83,5 +81,13 @@ public class DetallePedido {
 
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 }

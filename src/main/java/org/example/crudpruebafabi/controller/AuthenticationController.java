@@ -20,11 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
+    // Crear admin sin autenticacion
+    @PostMapping("/signup/createAdmin")
+    public ResponseEntity<Usuario> signUpAdmin(@RequestBody @Valid SignUpRequest signUpRequest) {
+        return new ResponseEntity<>(authenticationService.signUpAdmin(signUpRequest), HttpStatus.CREATED);
+    }
 
-
-    //Iniciar Sesion
+    // Iniciar Sesion
     @PostMapping("/signin")
-    public ResponseEntity<AuthenticationResponse> signin(@RequestBody @Valid SignInRequest signInRequest){
+    public ResponseEntity<AuthenticationResponse> signin(@RequestBody @Valid SignInRequest signInRequest) {
         return new ResponseEntity<>(authenticationService.signin(signInRequest), HttpStatus.OK);
     }
 

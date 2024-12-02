@@ -1,6 +1,5 @@
 package org.example.crudpruebafabi.service;
 
-import jakarta.transaction.Transactional;
 import org.example.crudpruebafabi.dto.PedidoDTO;
 import org.example.crudpruebafabi.dto.ProductoPedidoDTO;
 import org.example.crudpruebafabi.model.Cliente;
@@ -13,8 +12,8 @@ import org.example.crudpruebafabi.repository.PedidoRepository;
 import org.example.crudpruebafabi.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -44,11 +43,12 @@ public class PedidoService {
         return pedidoRepository.findById(idPedido).map(this::convertirAPedidoDTO);
     }
 
-
+    @Transactional
     public void eliminarPedido(Long idPedido) {
         pedidoRepository.deleteById(idPedido);
     }
 
+    @Transactional
     public Pedido actualizarPedido(Pedido pedido, int nuevaCantidad) {
         Pedido pedidoActualizado = pedidoRepository.save(pedido);
 
@@ -64,6 +64,7 @@ public class PedidoService {
         return pedidoActualizado;
     }
 
+    @Transactional
     public Pedido actualizarEstadoPedido(Long idPedido, boolean nuevoEstado) {
         Optional<Pedido> pedidoOptional = pedidoRepository.findById(idPedido);
         if (pedidoOptional.isPresent()) {
@@ -75,16 +76,15 @@ public class PedidoService {
         }
     }
 
-    // Método para convertir Pedido a PedidoDTO
     private PedidoDTO convertirAPedidoDTO(Pedido pedido) {
         List<DetallePedido> detalles = detallePedidoRepository.findByPedido(pedido);
 
         List<ProductoPedidoDTO> productos = detalles.stream()
                 .map(detalle -> new ProductoPedidoDTO(
-                        detalle.getIdProducto(),
+                        // detalle.getIdProducto(),
+                        detalle.getProducto().getIdProducto(),
                         detalle.getCantidad(),
-                        detalle.getPrecioUnitario()
-                ))
+                        detalle.getPrecioUnitario()))
                 .collect(Collectors.toList());
 
         double subtotal = detalles.stream()
@@ -98,15 +98,15 @@ public class PedidoService {
                 pedido.getFechaPedido(),
                 pedido.isEstadoPedido(),
                 subtotal,
-                productos
-        );
+                productos);
     }
 
-    // Método para guardar un nuevo pedido con detalles
+    @Transactional
     public Pedido guardarPedidoConDetalle(PedidoDTO pedidoDTO) {
         // Verificar y obtener cliente
         Cliente cliente = clienteRepository.findById(pedidoDTO.getIdCliente())
-                .orElseThrow(() -> new IllegalArgumentException("Cliente con ID " + pedidoDTO.getIdCliente() + " no existe."));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Cliente con ID " + pedidoDTO.getIdCliente() + " no existe."));
 
         // Crear y guardar el pedido
         Pedido pedido = new Pedido();
@@ -121,7 +121,8 @@ public class PedidoService {
         // Procesar cada producto en el pedido
         for (ProductoPedidoDTO productoPedidoDTO : pedidoDTO.getProductos()) {
             Producto producto = productoRepository.findById(productoPedidoDTO.getIdProducto())
-                    .orElseThrow(() -> new IllegalArgumentException("Producto con ID " + productoPedidoDTO.getIdProducto() + " no existe."));
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "Producto con ID " + productoPedidoDTO.getIdProducto() + " no existe."));
 
             if (producto.getDisponibilidad() < productoPedidoDTO.getCantidad()) {
                 throw new IllegalArgumentException("No hay suficiente stock del producto: " + producto.getNombre());
@@ -129,12 +130,14 @@ public class PedidoService {
 
             // Actualizar disponibilidad del producto
             producto.setDisponibilidad(producto.getDisponibilidad() - productoPedidoDTO.getCantidad());
-            productoRepository.save(producto);
+            /* Creé un producto que captura lo guardado en la base de datos */
+            Producto productoGuardado = productoRepository.save(producto);
 
             // Crear y guardar detalle del pedido
             DetallePedido detallePedido = new DetallePedido();
             detallePedido.setPedido(nuevoPedido);
-            detallePedido.setIdProducto(producto.getIdProducto());
+            // detallePedido.setProducto(producto.getIdProducto());
+            detallePedido.setProducto(productoGuardado);
             detallePedido.setCantidad(productoPedidoDTO.getCantidad());
             detallePedido.setPrecioUnitario(productoPedidoDTO.getPrecioUnitario());
             detallePedido.setSubtotal(productoPedidoDTO.getCantidad() * productoPedidoDTO.getPrecioUnitario());
@@ -168,7 +171,7 @@ public class PedidoService {
 
         // Eliminar detalles existentes y restaurar la disponibilidad de los productos
         for (DetallePedido detalle : pedido.getDetallesPedido()) {
-            Producto producto = productoRepository.findById(detalle.getIdProducto())
+            Producto producto = productoRepository.findById(detalle.getProducto().getIdProducto())
                     .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
             producto.setDisponibilidad(producto.getDisponibilidad() + detalle.getCantidad());
             productoRepository.save(producto);
@@ -189,12 +192,14 @@ public class PedidoService {
 
             // Actualizar disponibilidad del producto
             producto.setDisponibilidad(producto.getDisponibilidad() - productoPedidoDTO.getCantidad());
-            productoRepository.save(producto);
+            /* Creé un producto que captura lo guardado en la base de datos */
+            Producto productoGuardado = productoRepository.save(producto);
 
             // Crear y guardar nuevo detalle del pedido
             DetallePedido detallePedido = new DetallePedido();
             detallePedido.setPedido(pedido);
-            detallePedido.setIdProducto(producto.getIdProducto());
+            // detallePedido.setIdProducto(producto.getIdProducto());
+            detallePedido.setProducto(productoGuardado);
             detallePedido.setCantidad(productoPedidoDTO.getCantidad());
             detallePedido.setPrecioUnitario(productoPedidoDTO.getPrecioUnitario());
             detallePedido.setSubtotal(productoPedidoDTO.getCantidad() * productoPedidoDTO.getPrecioUnitario());

@@ -1,5 +1,7 @@
 package org.example.crudpruebafabi.model;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -24,6 +26,9 @@ public class Producto {
 
     @Column(name = "disponibilidad")
     private int disponibilidad;
+
+    @OneToMany(mappedBy = "producto")
+    private List<DetallePedido> detallePedidos;
 
     public Producto() {}
 
