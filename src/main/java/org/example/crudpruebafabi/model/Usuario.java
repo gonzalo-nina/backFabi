@@ -2,6 +2,7 @@ package org.example.crudpruebafabi.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,7 @@ public class Usuario implements UserDetails {
     @Column(name = "id_usuario")
     private Long id;
 
+    @Column(unique = true)
     private String email;
     private String usuario;
     private String password;

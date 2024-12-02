@@ -48,4 +48,14 @@ public class UsuarioController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/habilitar/{id}")
+    public ResponseEntity<Void> habilitarUsuario(@PathVariable Long id) {
+        boolean isActive = usuarioService.habilitarUsuario(id);
+        if (isActive) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

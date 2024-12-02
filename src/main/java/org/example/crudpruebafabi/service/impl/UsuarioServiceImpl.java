@@ -37,6 +37,8 @@ public class UsuarioServiceImpl implements UsuarioService {
             dto.setUsuario(usuario.getUsuario());
             dto.setEmail(usuario.getEmail());
             dto.setClave(usuario.getPassword());
+            dto.setActivo(usuario.isActivo());
+
             return dto;
         }).collect(Collectors.toList());
     }
@@ -59,6 +61,17 @@ public class UsuarioServiceImpl implements UsuarioService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean habilitarUsuario(Long id) {
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if (usuario.isPresent()) {
+            usuario.get().setActivo(true);
+            usuarioRepository.save(usuario.get());
+            return true;
+        }
+        return true;
     }
 
 }

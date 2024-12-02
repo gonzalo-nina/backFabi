@@ -23,5 +23,6 @@ public interface UsuarioService {
 
     public boolean deshabilitarUsuario(Long id);
 
+    public boolean habilitarUsuario(Long id);
 
 }
