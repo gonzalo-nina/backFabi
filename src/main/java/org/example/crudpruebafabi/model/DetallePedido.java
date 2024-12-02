@@ -1,5 +1,6 @@
 package org.example.crudpruebafabi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +13,7 @@ public class DetallePedido {
 
     @ManyToOne
     @JoinColumn(name = "id_pedido")
+    @JsonBackReference
     private Pedido pedido;
 
     /* Agregando la relacion para que puedan asociar sus productos uhaha */

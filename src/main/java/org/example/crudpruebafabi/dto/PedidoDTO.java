@@ -1,28 +1,24 @@
 package org.example.crudpruebafabi.dto;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 
 public class PedidoDTO {
     private Long idPedido;
     private Long idCliente;
-    private String nombreCliente;
-    private Date fechaPedido;
+    private LocalDate fechaPedido;
     private boolean estadoPedido;
     private double subtotal;
-    private List<ProductoPedidoDTO> productos;
 
     // Constructores
-    public PedidoDTO() {}
+    public PedidoDTO() {
+    }
 
-    public PedidoDTO(Long idPedido, Long idCliente, String nombreCliente, Date fechaPedido, boolean estadoPedido, double subtotal, List<ProductoPedidoDTO> productos) {
+    public PedidoDTO(Long idPedido, Long idCliente, LocalDate fechaPedido, boolean estadoPedido, double subtotal) {
         this.idPedido = idPedido;
         this.idCliente = idCliente;
-        this.nombreCliente = nombreCliente;
         this.fechaPedido = fechaPedido;
         this.estadoPedido = estadoPedido;
         this.subtotal = subtotal;
-        this.productos = productos;
     }
 
     public Long getIdPedido() {
@@ -41,19 +37,11 @@ public class PedidoDTO {
         this.idCliente = idCliente;
     }
 
-    public String getNombreCliente() {
-        return nombreCliente;
-    }
-
-    public void setNombreCliente(String nombreCliente) {
-        this.nombreCliente = nombreCliente;
-    }
-
-    public Date getFechaPedido() {
+    public LocalDate getFechaPedido() {
         return fechaPedido;
     }
 
-    public void setFechaPedido(Date fechaPedido) {
+    public void setFechaPedido(LocalDate fechaPedido) {
         this.fechaPedido = fechaPedido;
     }
 
@@ -73,11 +61,4 @@ public class PedidoDTO {
         this.subtotal = subtotal;
     }
 
-    public List<ProductoPedidoDTO> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(List<ProductoPedidoDTO> productos) {
-        this.productos = productos;
-    }
 }

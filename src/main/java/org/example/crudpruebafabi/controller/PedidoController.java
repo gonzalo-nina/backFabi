@@ -25,16 +25,16 @@ public class PedidoController {
 
     // Obtener pedido por ID
     @GetMapping("/{id}")
-    public ResponseEntity<PedidoDTO> obtenerPedidoPorId(@PathVariable Long id) {
-        Optional<PedidoDTO> pedido = pedidoService.obtenerPedidoPorId(id);
-        return pedido.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Pedido> obtenerPedidoPorId(@PathVariable Long id) {
+        Optional<Pedido> pedido = pedidoService.obtenerPedidoPorId(id);
+        return pedido.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     // Crear un nuevo pedido
     @PostMapping
     public ResponseEntity<Pedido> crearPedido(@RequestBody PedidoDTO pedidoDTO) {
         try {
-            Pedido nuevoPedido = pedidoService.guardarPedidoConDetalle(pedidoDTO);
+            Pedido nuevoPedido = pedidoService.guardarPedido(pedidoDTO);
             return ResponseEntity.ok(nuevoPedido);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
@@ -43,16 +43,9 @@ public class PedidoController {
 
     // Actualizar un pedido existente
     @PutMapping("/{id}")
-    public ResponseEntity<Pedido> actualizarPedido(@PathVariable Long id, @RequestBody PedidoDTO pedidoDTO) {
-        try {
-            pedidoDTO.setIdPedido(id); // Asegurarse de que el DTO tiene el ID correcto
-            Pedido pedidoActualizado = pedidoService.actualizarPedidoConDetalle(pedidoDTO);
-            return ResponseEntity.ok(pedidoActualizado);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Pedido> actualizarSubtotalPedido(@PathVariable Long id, @RequestBody PedidoDTO pedidoActualizado) {
+        pedidoService.actualizarSubtotalPedido(id, pedidoActualizado);
+        return ResponseEntity.ok().build();
     }
 
     // Actualizar el estado de un pedido
@@ -69,7 +62,7 @@ public class PedidoController {
     // Eliminar un pedido
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarPedido(@PathVariable Long id) {
-        Optional<PedidoDTO> pedidoExistente = pedidoService.obtenerPedidoPorId(id);
+        Optional<Pedido> pedidoExistente = pedidoService.obtenerPedidoPorId(id);
         if (pedidoExistente.isPresent()) {
             pedidoService.eliminarPedido(id);
             return ResponseEntity.noContent().build();

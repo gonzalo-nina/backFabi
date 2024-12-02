@@ -32,6 +32,10 @@ public class DetallePedidoService {
         return detallePedidoRepository.findById(idDetallePedido);
     }
 
+    public List<DetallePedido> obtenerDetallesPedidoPorPedido(Long idPedido) {
+        return detallePedidoRepository.findByPedido_IdPedido(idPedido);
+    }
+
     @Transactional
     public void eliminarDetallePedido(Long idDetallePedido) {
         detallePedidoRepository.deleteById(idDetallePedido);

@@ -15,19 +15,23 @@ public class DetallePedidoController {
     @Autowired
     private DetallePedidoService detallePedidoService;
 
-    @PostMapping
+    @PostMapping("/crear")
     public ResponseEntity<DetallePedido> guardarDetallePedido(@RequestBody DetallePedido detallePedido) {
         try {
             // Validamos que el pedido esté asociado
             if (detallePedido.getPedido() == null || detallePedido.getPedido().getIdPedido() == null) {
                 throw new IllegalArgumentException("El detalle de pedido debe tener un pedido asociado.");
             }
-
             DetallePedido nuevoDetalle = detallePedidoService.guardarDetallePedido(detallePedido);
             return ResponseEntity.ok(nuevoDetalle);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
+    }
+
+    @GetMapping("/pedido/{idPedido}")
+    public List<DetallePedido> obtenerDetallesPedidoPorPedido(@PathVariable Long idPedido) {
+        return detallePedidoService.obtenerDetallesPedidoPorPedido(idPedido);
     }
 
     @GetMapping
