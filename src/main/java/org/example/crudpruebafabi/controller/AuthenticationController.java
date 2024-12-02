@@ -20,11 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
-    //Crear Admin
-    @PostMapping("/createAdmin")
-    public ResponseEntity<Usuario> signUpAdmin(@RequestBody @Valid SignUpRequest signUpRequest){
-        return new ResponseEntity<>(authenticationService.signUpAdmin(signUpRequest), HttpStatus.CREATED);
-    }
+
 
     //Iniciar Sesion
     @PostMapping("/signin")
