@@ -55,6 +55,11 @@ public class PedidoService {
         }
     }
 
+    public List<PedidoDTO> listarPedidosConEstadoFalse() {
+        List<Pedido> pedidos = pedidoRepository.findByEstadoPedidoFalse();
+        return pedidos.stream().map(this::convertirAPedidoDTO).collect(Collectors.toList());
+    }
+
     private PedidoDTO convertirAPedidoDTO(Pedido pedido) {
 
         return new PedidoDTO(

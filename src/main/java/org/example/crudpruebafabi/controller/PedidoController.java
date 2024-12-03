@@ -71,4 +71,9 @@ public class PedidoController {
         }
     }
 
+    @GetMapping("/estado-false")
+    public List<PedidoDTO> listarPedidosConEstadoFalse() {
+        return pedidoService.listarPedidosConEstadoFalse();
+    }
+
 }
