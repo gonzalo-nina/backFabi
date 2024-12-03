@@ -30,14 +30,27 @@ public class Producto {
     @OneToMany(mappedBy = "producto")
     private List<DetallePedido> detallePedidos;
 
+    @Column(name = "url")
+    private String url;
+
     public Producto() {}
 
-    public Producto(Long idCatalogo, String nombre, String descripcion, double precio, int disponibilidad) {
+    public Producto(Long idProducto, Long idCatalogo, String nombre, String descripcion, double precio, int disponibilidad, String url) {
+        this.idProducto = idProducto;
         this.idCatalogo = idCatalogo;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.disponibilidad = disponibilidad;
+        this.url = url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public Producto(Long idProducto, String nombreProducto) {

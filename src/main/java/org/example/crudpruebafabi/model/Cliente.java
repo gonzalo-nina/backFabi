@@ -26,6 +26,9 @@ public class Cliente {
     @Column(name = "FechaRegistro_cliente")
     private Date fechaRegistro;
 
+    @Column(name = "url")
+    private String url;
+
     /* Agregando la relación que faltaba en el cliente */
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos;
@@ -34,7 +37,22 @@ public class Cliente {
         this.fechaRegistro = new Date();
     }
 
-    public Cliente(Long idCliente, String nombreCliente) {
+    public Cliente(Long idCliente, String nombre, String email, String telefono, String direccion, Date fechaRegistro, String url) {
+        this.idCliente = idCliente;
+        this.nombre = nombre;
+        this.email = email;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.fechaRegistro = fechaRegistro;
+        this.url = url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public Long getIdCliente() {

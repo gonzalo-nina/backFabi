@@ -16,11 +16,16 @@ public class Catalogo {
     @Column(name = "descripcion_catalogo")
     private String descripcionCatalogo;
 
+    @Column(name = "url")
+    private String url;
+
     public Catalogo() {}
 
-    public Catalogo(String nombreCatalogo, String descripcionCatalogo) {
+    public Catalogo(Long idCatalogo, String nombreCatalogo, String descripcionCatalogo, String url) {
+        this.idCatalogo = idCatalogo;
         this.nombreCatalogo = nombreCatalogo;
         this.descripcionCatalogo = descripcionCatalogo;
+        this.url = url;
     }
 
     public Long getIdCatalogo() {
@@ -45,5 +50,13 @@ public class Catalogo {
 
     public void setDescripcionCatalogo(String descripcionCatalogo) {
         this.descripcionCatalogo = descripcionCatalogo;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
