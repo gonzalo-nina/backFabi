@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 public class Cliente {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCliente;
 
     @Column(name = "Nombre_cliente")

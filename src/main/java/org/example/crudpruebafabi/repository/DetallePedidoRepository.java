@@ -10,4 +10,6 @@ public interface DetallePedidoRepository extends JpaRepository<DetallePedido, Lo
     List<DetallePedido> findByPedido(Pedido pedido);
 
     List<DetallePedido> findByPedido_IdPedido(Long idPedido);
+
+    List<DetallePedido> findByProductoIdProducto(Long idProducto);
 }

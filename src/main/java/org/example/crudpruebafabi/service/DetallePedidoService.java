@@ -40,5 +40,9 @@ public class DetallePedidoService {
     public void eliminarDetallePedido(Long idDetallePedido) {
         detallePedidoRepository.deleteById(idDetallePedido);
     }
+
+    public List<DetallePedido> obtenerDetallesPedidoPorProducto(Long idProducto) {
+        return detallePedidoRepository.findByProductoIdProducto(idProducto);
+    }
 }
 

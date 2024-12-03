@@ -54,4 +54,10 @@ public class DetallePedidoController {
         detallePedidoService.eliminarDetallePedido(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/producto/{idProducto}/existe")
+    public ResponseEntity<Boolean> verificarProductoEnDetalles(@PathVariable Long idProducto) {
+        List<DetallePedido> detalles = detallePedidoService.obtenerDetallesPedidoPorProducto(idProducto);
+        return ResponseEntity.ok(!detalles.isEmpty());
+    }
 }

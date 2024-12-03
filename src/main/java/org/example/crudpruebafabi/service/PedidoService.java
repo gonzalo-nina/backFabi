@@ -2,8 +2,10 @@ package org.example.crudpruebafabi.service;
 
 import org.example.crudpruebafabi.dto.PedidoDTO;
 import org.example.crudpruebafabi.model.Cliente;
+import org.example.crudpruebafabi.model.DetallePedido;
 import org.example.crudpruebafabi.model.Pedido;
 import org.example.crudpruebafabi.repository.ClienteRepository;
+import org.example.crudpruebafabi.repository.DetallePedidoRepository;
 import org.example.crudpruebafabi.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class PedidoService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private DetallePedidoRepository detallePedidoRepository;
 
     public List<PedidoDTO> listarPedidos() {
         List<Pedido> pedidos = pedidoRepository.findAll();
